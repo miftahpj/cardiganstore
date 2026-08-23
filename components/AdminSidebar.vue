@@ -32,28 +32,18 @@
 
     <nav class="flex flex-1 flex-col gap-1">
       <button
+        v-for="item in menu"
+        :key="item.key"
         type="button"
         class="flex items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition"
-        :class="modelValue === 'dashboard' ? 'bg-white/10 text-white' : 'text-primary-200 hover:bg-white/5'"
-        @click="select('dashboard')"
+        :class="modelValue === item.key ? 'bg-white/10 text-white' : 'text-primary-200 hover:bg-white/5'"
+        @click="select(item.key)"
       >
-        <AppIcon name="chart-bar" class="h-5 w-5" /> Dashboard
-      </button>
-      <button
-        type="button"
-        class="flex items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition"
-        :class="modelValue === 'produk' ? 'bg-white/10 text-white' : 'text-primary-200 hover:bg-white/5'"
-        @click="select('produk')"
-      >
-        <AppIcon name="hanger" class="h-5 w-5" /> Kelola Produk
+        <AppIcon :name="item.icon" class="h-5 w-5" /> {{ item.label }}
       </button>
 
       <div class="mt-2 flex items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-primary-400/70">
         <AppIcon name="package" class="h-5 w-5" /> Pesanan
-        <span class="ml-auto rounded-full bg-white/10 px-2 py-0.5 text-[10px]">Segera</span>
-      </div>
-      <div class="flex items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-primary-400/70">
-        <AppIcon name="settings" class="h-5 w-5" /> Pengaturan
         <span class="ml-auto rounded-full bg-white/10 px-2 py-0.5 text-[10px]">Segera</span>
       </div>
     </nav>
@@ -68,12 +58,21 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ modelValue: 'dashboard' | 'produk' }>()
-const emit = defineEmits<{ (e: 'update:modelValue', value: 'dashboard' | 'produk'): void }>()
+export type AdminTab = 'dashboard' | 'produk' | 'beranda' | 'toko'
+
+defineProps<{ modelValue: AdminTab }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: AdminTab): void }>()
+
+const menu: { key: AdminTab; label: string; icon: string }[] = [
+  { key: 'dashboard', label: 'Dashboard', icon: 'chart-bar' },
+  { key: 'produk', label: 'Kelola Produk', icon: 'hanger' },
+  { key: 'beranda', label: 'Kelola Beranda', icon: 'sparkle' },
+  { key: 'toko', label: 'Kelola Toko', icon: 'settings' }
+]
 
 const mobileOpen = ref(false)
 
-function select(tab: 'dashboard' | 'produk') {
+function select(tab: AdminTab) {
   emit('update:modelValue', tab)
   mobileOpen.value = false
 }

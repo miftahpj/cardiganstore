@@ -4,12 +4,17 @@ export interface Product {
   description: string
   image_url: string
   price: number | string
+  code: string
+  is_active: boolean
+  is_featured: boolean
   shopee_url: string
   tiktok_url: string
   created_at?: string
 }
 
 export const WA_ADMIN_NUMBER = '6285759169693'
+export const WA_CHANNEL_URL = 'https://whatsapp.com/channel/0029VbD8BtB9WtC9NF56161p'
+// Fallback link toko, dipakai sebelum pengaturan dari /api/settings (kelola toko) selesai dimuat
 export const SHOPEE_STORE_URL = 'https://shopee.co.id/wooman.id'
 export const TIKTOK_STORE_URL = 'https://www.tiktok.com/@woomanbykhania'
 export const INSTAGRAM_URL = 'https://instagram.com/wooman.officialstore'

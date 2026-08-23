@@ -51,14 +51,26 @@
 </template>
 
 <script setup lang="ts">
-const { products, loading, error, fetchProducts } = useProducts()
+import type { Product } from '~/composables/useProducts'
 
-onMounted(() => {
-  fetchProducts()
+// Ambil produk yang dipilih lewat "Kelola Beranda" (aktif & ditandai tampil di beranda)
+const featured = ref<Product[]>([])
+const loading = ref(false)
+const error = ref<string | null>(null)
+
+onMounted(async () => {
+  loading.value = true
+  error.value = null
+  try {
+    featured.value = await $fetch<Product[]>('/api/products', {
+      query: { status: 'active', featured: '1', sort: 'newest' }
+    })
+  } catch (err: any) {
+    error.value = err?.data?.statusMessage || 'Gagal memuat produk.'
+  } finally {
+    loading.value = false
+  }
 })
-
-// Teaser homepage: cukup tampilkan sebagian, katalog lengkap ada di /katalog
-const featured = computed(() => products.value.slice(0, 8))
 
 const trackRef = ref<HTMLElement | null>(null)
 

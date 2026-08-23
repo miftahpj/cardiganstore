@@ -91,6 +91,8 @@ const searchQuery = ref((route.query.q as string) || '')
 const filteredProducts = computed(() => {
   if (!searchQuery.value.trim()) return products.value
   const q = searchQuery.value.toLowerCase()
-  return products.value.filter((p) => p.name.toLowerCase().includes(q))
+  return products.value.filter(
+    (p) => p.name.toLowerCase().includes(q) || (p.code || '').toLowerCase().includes(q)
+  )
 })
 </script>

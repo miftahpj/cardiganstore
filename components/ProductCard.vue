@@ -10,7 +10,7 @@
       />
       <div class="absolute right-3 top-3 flex flex-col gap-2">
         <a
-          :href="product.shopee_url || SHOPEE_STORE_URL"
+          :href="product.shopee_url || settings.shopee_url"
           target="_blank"
           rel="noopener"
           title="Beli di Shopee"
@@ -20,7 +20,7 @@
           <BrandMark brand="shopee" class="h-5 w-5" />
         </a>
         <a
-          :href="product.tiktok_url || TIKTOK_STORE_URL"
+          :href="product.tiktok_url || settings.tiktok_url"
           target="_blank"
           rel="noopener"
           title="Lihat di TikTok Shop"
@@ -37,6 +37,9 @@
       <NuxtLink :to="`/product/${product.id}`" class="hover:text-primary-600">
         <p class="line-clamp-1 text-sm font-bold leading-snug text-primary-900">{{ product.name }}</p>
       </NuxtLink>
+      <p v-if="product.code" class="mt-1 inline-flex w-fit items-center rounded-md bg-primary-50 px-2 py-0.5 font-mono text-xs font-semibold tracking-wide text-primary-600">
+        Kode: {{ product.code }}
+      </p>
       <p class="mt-1 text-lg font-extrabold leading-none text-primary-600">{{ formatRupiah(product.price) }}</p>
       <p class="mt-2 line-clamp-2 text-[13px] leading-relaxed text-primary-600">{{ product.description }}</p>
     </div>
@@ -65,4 +68,6 @@
 import type { Product } from '~/composables/useProducts'
 
 defineProps<{ product: Product }>()
+
+const { settings } = useStoreSettings()
 </script>

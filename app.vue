@@ -9,7 +9,11 @@
 <script setup lang="ts">
 import 'aos/dist/aos.css'
 
+const { fetchSettings } = useStoreSettings()
+
 onMounted(async () => {
+  fetchSettings()
+
   const AOS = (await import('aos')).default
   AOS.init({
     duration: 700,

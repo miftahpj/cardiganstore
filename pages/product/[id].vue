@@ -23,24 +23,36 @@
 
         <div data-aos="fade-left">
           <h1 class="section-title">{{ product?.name }}</h1>
+          <p v-if="product?.code" class="mt-1 inline-flex w-fit items-center rounded-md bg-blush px-2.5 py-1 font-mono text-sm font-semibold tracking-wide text-primary-600">
+            Kode: {{ product.code }}
+          </p>
           <p class="mt-4 text-2xl font-bold text-primary-600">{{ formatRupiah(product?.price || 0) }}</p>
           <p class="mt-6 leading-relaxed text-primary-600">{{ product?.description }}</p>
 
-          <div class="mt-6 flex items-center gap-4 text-primary-400">
-            <a :href="product?.shopee_url || SHOPEE_STORE_URL" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm hover:text-orange-500">
-              <BrandMark brand="shopee" class="h-4 w-4" /> Beli di Shopee
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a
+              v-if="product"
+              :href="product.shopee_url || settings.shopee_url"
+              target="_blank"
+              rel="noopener"
+              class="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-orange-600"
+            >
+              <BrandMark brand="shopee" class="h-5 w-5" /> Beli di Shopee
             </a>
-            <a :href="product?.tiktok_url || TIKTOK_STORE_URL" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm hover:text-primary-900">
-              <BrandMark brand="tiktok" class="h-4 w-4" /> Lihat di TikTok
+            <a
+              v-if="product"
+              :href="product.tiktok_url || settings.tiktok_url"
+              target="_blank"
+              rel="noopener"
+              class="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary-900 px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-primary-800"
+            >
+              <BrandMark brand="tiktok" class="h-5 w-5" /> Beli di TikTok Shop
             </a>
           </div>
 
-          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a v-if="product" :href="buildWhatsappLink(product)" target="_blank" rel="noopener" class="btn-primary flex-1">
+          <div class="mt-3">
+            <a v-if="product" :href="buildWhatsappLink(product)" target="_blank" rel="noopener" class="btn-outline w-full">
               Chat via WhatsApp
-            </a>
-            <a v-if="product" :href="product.shopee_url || SHOPEE_STORE_URL" target="_blank" rel="noopener" class="btn-outline flex-1">
-              Beli Sekarang
             </a>
           </div>
 
@@ -62,6 +74,7 @@
 <script setup lang="ts">
 const route = useRoute()
 const { fetchProduct } = useProducts()
+const { settings } = useStoreSettings()
 
 const {
   data: product,

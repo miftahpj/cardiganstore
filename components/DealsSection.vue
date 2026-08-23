@@ -4,6 +4,7 @@
       <div data-aos="fade-up" class="relative mb-10 text-center">
         <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary-400">Deals & Exclusive</p>
         <h2 class="section-title mt-2">Kenapa Belanja di WOOMAN?</h2>
+        <p class="mx-auto mt-2 max-w-md text-sm text-primary-500">Alasan ratusan pelanggan balik lagi belanja outfit di WOOMAN.</p>
 
         <div class="pointer-events-none absolute inset-x-0 top-1/2 hidden -translate-y-1/2 justify-between px-1 sm:flex">
           <button
@@ -61,7 +62,7 @@
             Follow TikTok & Instagram kami untuk info restock pertama kali, promo eksklusif, dan outfit inspo tiap hari.
           </p>
           <a
-            :href="TIKTOK_STORE_URL"
+            :href="settings.tiktok_url"
             target="_blank"
             rel="noopener"
             class="btn-outline !border-white !text-white hover:!bg-white hover:!text-primary-700 mt-6 inline-flex"
@@ -82,6 +83,8 @@
 </template>
 
 <script setup lang="ts">
+const { settings } = useStoreSettings()
+
 interface Deal {
   icon: string
   title: string

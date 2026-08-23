@@ -49,7 +49,7 @@
           <p class="mb-4 text-xs font-semibold uppercase tracking-widest text-white/80">Kunjungi Toko Kami</p>
           <div class="flex flex-wrap items-center justify-center gap-4 md:justify-start">
             <a
-              :href="SHOPEE_STORE_URL"
+              :href="settings.shopee_url"
               target="_blank"
               rel="noopener"
               class="flex items-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-semibold text-orange-600 shadow-soft transition hover:-translate-y-0.5"
@@ -57,7 +57,7 @@
               <BrandMark brand="shopee" class="h-5 w-5" /> Shopee: wooman.id
             </a>
             <a
-              :href="TIKTOK_STORE_URL"
+              :href="settings.tiktok_url"
               target="_blank"
               rel="noopener"
               class="flex items-center gap-2 rounded-2xl bg-primary-900 px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5"
@@ -69,7 +69,7 @@
       </div>
 
       <!-- Kolom kanan: tumpukan produk (kartu depan jatuh, kartu kiri naik menggantikan) -->
-      <div data-aos="fade-left" data-aos-delay="150" class="relative mx-auto w-full max-w-sm md:max-w-none">
+      <div data-aos="fade-left" data-aos-delay="150" class="relative mx-auto w-full max-w-[260px] pb-6 sm:max-w-xs md:max-w-sm md:pb-8">
         <div
           class="relative aspect-[4/5] w-full"
           @mouseenter="paused = true"
@@ -120,6 +120,7 @@ const query = ref('')
 const router = useRouter()
 
 const { products, fetchProducts } = useProducts()
+const { settings } = useStoreSettings()
 
 onMounted(() => {
   fetchProducts()
@@ -172,7 +173,7 @@ const restStyles = [
 ]
 
 // kartu yang baru saja digeser dari depan akan "jatuh" ke bawah lalu memudar
-const fallingStyle = { transform: 'translate(6%, 65%) rotate(10deg) scale(0.9)', opacity: 0, zIndex: 6 }
+const fallingStyle = { transform: 'translate(6%, 48%) rotate(10deg) scale(0.85)', opacity: 0, zIndex: 6 }
 
 function cardStyle(i: number) {
   if (slideKey(i) === exitingKey.value) return fallingStyle

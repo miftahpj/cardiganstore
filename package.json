@@ -1,0 +1,24 @@
+{
+  "name": "wooman-khania",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "aos": "^2.3.4",
+    "nuxt": "^3.13.0",
+    "pg": "^8.12.0",
+    "vue": "^3.4.0",
+    "vue-router": "^4.4.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.12.0",
+    "@types/aos": "^3.0.7",
+    "@types/pg": "^8.11.6"
+  }
+}

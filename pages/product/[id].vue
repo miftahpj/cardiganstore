@@ -23,7 +23,7 @@
 
         <div data-aos="fade-left">
           <h1 class="section-title">{{ product?.name }}</h1>
-          <p v-if="product?.code" class="mt-1 inline-flex w-fit items-center rounded-md bg-blush px-2.5 py-1 font-mono text-sm font-semibold tracking-wide text-primary-600">
+          <p v-if="product?.code" class="mt-2 inline-flex w-fit items-center rounded-lg bg-blush px-3 py-1.5 font-mono text-xl font-bold tracking-wide text-primary-600 md:text-2xl">
             Kode: {{ product.code }}
           </p>
           <p class="mt-4 text-2xl font-bold text-primary-600">{{ formatRupiah(product?.price || 0) }}</p>

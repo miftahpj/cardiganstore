@@ -80,6 +80,34 @@
       <path d="M5 12h14" />
       <path d="M13 6l6 6-6 6" />
     </template>
+
+    <template v-else-if="name === 'pencil'">
+      <path d="M4 20l.9-4 10.6-10.6a2 2 0 0 1 2.8 0l.3.3a2 2 0 0 1 0 2.8L8 19l-4 1z" />
+      <path d="M13.5 6.5l4 4" />
+    </template>
+
+    <template v-else-if="name === 'trash'">
+      <path d="M5 7h14" />
+      <path d="M9 7V5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5v2" />
+      <path d="M7 7l1 12.5A1.8 1.8 0 0 0 9.8 21h4.4a1.8 1.8 0 0 0 1.8-1.5L17 7" />
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+    </template>
+
+    <template v-else-if="name === 'tag'">
+      <path d="M12.6 3.4H6.6a2 2 0 0 0-2 2v6l9.9 9.9a2 2 0 0 0 2.8 0l5.2-5.2a2 2 0 0 0 0-2.8l-9.9-9.9z" />
+      <circle cx="8.4" cy="8.4" r="1.4" fill="currentColor" stroke="none" />
+    </template>
+
+    <template v-else-if="name === 'x'">
+      <path d="M6 6l12 12" />
+      <path d="M18 6L6 18" />
+    </template>
+
+    <template v-else-if="name === 'search'">
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-4.3-4.3" />
+    </template>
   </svg>
 </template>
 

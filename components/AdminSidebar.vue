@@ -41,11 +41,6 @@
       >
         <AppIcon :name="item.icon" class="h-5 w-5" /> {{ item.label }}
       </button>
-
-      <div class="mt-2 flex items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-primary-400/70">
-        <AppIcon name="package" class="h-5 w-5" /> Pesanan
-        <span class="ml-auto rounded-full bg-white/10 px-2 py-0.5 text-[10px]">Segera</span>
-      </div>
     </nav>
 
     <NuxtLink

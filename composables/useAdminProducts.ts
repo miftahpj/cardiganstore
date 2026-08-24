@@ -4,6 +4,7 @@ export interface AdminProductFilters {
   q?: string
   status?: 'all' | 'active' | 'inactive'
   sort?: 'newest' | 'oldest'
+  category?: string
 }
 
 // State terpisah dari useProducts() (yang dipakai halaman publik) supaya produk
@@ -22,6 +23,7 @@ export function useAdminProducts() {
         sort: filters.sort || 'newest'
       }
       if (filters.q?.trim()) query.q = filters.q.trim()
+      if (filters.category) query.category = filters.category
 
       const data = await $fetch<Product[]>('/api/products', { query })
       products.value = data
@@ -32,7 +34,7 @@ export function useAdminProducts() {
     }
   }
 
-  async function createProduct(payload: Partial<Product>) {
+  async function createProduct(payload: Partial<Product> | FormData) {
     const created = await $fetch<Product>('/api/products', {
       method: 'POST',
       body: payload
@@ -41,7 +43,7 @@ export function useAdminProducts() {
     return created
   }
 
-  async function updateProduct(id: number, payload: Partial<Product>) {
+  async function updateProduct(id: number, payload: Partial<Product> | FormData) {
     const updated = await $fetch<Product>(`/api/products/${id}`, {
       method: 'PUT',
       body: payload
@@ -57,11 +59,15 @@ export function useAdminProducts() {
   }
 
   async function toggleActive(product: Product) {
-    return updateProduct(product.id, { ...product, is_active: !product.is_active })
+    // image_url dikecualikan: nilainya dihitung ulang server (via foto tersimpan),
+    // jadi tidak perlu (dan tidak boleh) ikut dikirim saat cuma toggle status.
+    const { image_url, created_at, ...rest } = product
+    return updateProduct(product.id, { ...rest, is_active: !product.is_active })
   }
 
   async function toggleFeatured(product: Product) {
-    return updateProduct(product.id, { ...product, is_featured: !product.is_featured })
+    const { image_url, created_at, ...rest } = product
+    return updateProduct(product.id, { ...rest, is_featured: !product.is_featured })
   }
 
   return {

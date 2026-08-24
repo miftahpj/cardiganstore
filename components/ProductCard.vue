@@ -37,7 +37,7 @@
       <NuxtLink :to="`/product/${product.id}`" class="hover:text-primary-600">
         <p class="line-clamp-1 text-sm font-bold leading-snug text-primary-900">{{ product.name }}</p>
       </NuxtLink>
-      <p v-if="product.code" class="mt-1 inline-flex w-fit items-center rounded-md bg-primary-50 px-2 py-0.5 font-mono text-xs font-semibold tracking-wide text-primary-600">
+      <p v-if="product.code" class="mt-1 inline-flex w-fit items-center rounded-md bg-primary-50 px-2 py-0.5 font-mono text-sm font-bold tracking-wide text-primary-600">
         Kode: {{ product.code }}
       </p>
       <p class="mt-1 text-lg font-extrabold leading-none text-primary-600">{{ formatRupiah(product.price) }}</p>

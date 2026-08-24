@@ -10,43 +10,71 @@ export default defineEventHandler(async (event) => {
   // GET /api/products/:id -> single product detail
   // Produk yang nonaktif disembunyikan dari halaman publik (dianggap tidak ditemukan)
   if (method === 'GET') {
-    const { rows } = await pool.query('SELECT * FROM products WHERE id = $1', [id])
+    const { rows } = await pool.query(`SELECT ${PRODUCT_LIST_COLUMNS} FROM products WHERE id = $1`, [id])
     if (rows.length === 0 || rows[0].is_active === false) {
       throw createError({ statusCode: 404, statusMessage: 'Produk tidak ditemukan.' })
     }
-    return rows[0]
+    return attachImageUrl(rows[0])
   }
 
   // PUT /api/products/:id -> update product
+  // Terima multipart/form-data (field "image" opsional -> ganti foto) ATAU JSON biasa (update parsial, tanpa foto)
   if (method === 'PUT') {
-    const body = await readBody(event)
-    const { name, description, image_url, price, code, is_active, is_featured, shopee_url, tiktok_url } = body
+    const { fields, file } = await parseProductBody(event)
+
+    const is_active = fields.is_active === undefined ? true : fields.is_active === 'true'
+    const is_featured = fields.is_featured === 'true'
+    const category_id = fields.category_id ? Number(fields.category_id) : null
+
+    const setParts = [
+      'name = $1',
+      'description = $2',
+      'price = $3',
+      'code = $4',
+      'is_active = $5',
+      'is_featured = $6',
+      'category_id = $7',
+      'shopee_url = $8',
+      'tiktok_url = $9',
+      'updated_at = NOW()'
+    ]
+    const params: any[] = [
+      fields.name,
+      fields.description || '',
+      fields.price !== undefined ? Number(fields.price) : 0,
+      fields.code || '',
+      is_active,
+      is_featured,
+      category_id,
+      fields.shopee_url || '',
+      fields.tiktok_url || ''
+    ]
+
+    if (file) {
+      // Foto baru diupload -> timpa data lama
+      params.push(file.data, file.type)
+      setParts.push(`image_data = $${params.length - 1}`, `image_mime = $${params.length}`)
+    } else if (fields.image_url) {
+      // Tidak upload file baru, tapi ada image_url manual (jarang dipakai, jaga-jaga panggilan API langsung)
+      params.push(fields.image_url)
+      setParts.push(`image_url = $${params.length}`)
+    }
+    // Kalau tidak ada file baru & tidak ada image_url -> foto lama dibiarkan apa adanya
+
+    params.push(id)
 
     const { rows } = await pool.query(
-      `UPDATE products
-       SET name = $1, description = $2, image_url = $3, price = $4, code = $5,
-           is_active = $6, is_featured = $7, shopee_url = $8, tiktok_url = $9
-       WHERE id = $10
-       RETURNING *`,
-      [
-        name,
-        description || '',
-        image_url || '',
-        price,
-        code || '',
-        is_active === undefined ? true : !!is_active,
-        !!is_featured,
-        shopee_url || '',
-        tiktok_url || '',
-        id
-      ]
+      `UPDATE products SET ${setParts.join(', ')}
+       WHERE id = $${params.length}
+       RETURNING ${PRODUCT_LIST_COLUMNS}`,
+      params
     )
 
     if (rows.length === 0) {
       throw createError({ statusCode: 404, statusMessage: 'Produk tidak ditemukan.' })
     }
 
-    return rows[0]
+    return attachImageUrl(rows[0])
   }
 
   // DELETE /api/products/:id -> remove product

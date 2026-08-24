@@ -7,6 +7,7 @@ export interface Product {
   code: string
   is_active: boolean
   is_featured: boolean
+  category_id: number | null
   shopee_url: string
   tiktok_url: string
   created_at?: string

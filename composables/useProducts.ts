@@ -29,11 +29,18 @@ export function formatRupiah(value: number | string): string {
   }).format(num || 0)
 }
 
-export function buildWhatsappLink(product: Pick<Product, 'name' | 'price'>): string {
+export function buildWhatsappLink(product: Pick<Product, 'name' | 'price'>, number?: string): string {
+  const clean = (number || WA_ADMIN_NUMBER).replace(/[^0-9]/g, '')
   const message = `Halo Admin WOOMAN, saya tertarik dengan produk *${product.name}* seharga *${formatRupiah(
     product.price
   )}*. Apakah stoknya masih ada?`
-  return `https://wa.me/${WA_ADMIN_NUMBER}?text=${encodeURIComponent(message)}`
+  return `https://wa.me/${clean}?text=${encodeURIComponent(message)}`
+}
+
+// Dipakai untuk link WhatsApp di ikon "Ikuti Kami" pada footer, nomornya dikelola dari admin (Kelola Profile)
+export function buildWaLink(number: string, message: string): string {
+  const clean = (number || WA_ADMIN_NUMBER).replace(/[^0-9]/g, '')
+  return `https://wa.me/${clean}?text=${encodeURIComponent(message)}`
 }
 
 export function useProducts() {

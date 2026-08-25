@@ -51,7 +51,7 @@
           </div>
 
           <div class="mt-3">
-            <a v-if="product" :href="buildWhatsappLink(product)" target="_blank" rel="noopener" class="btn-outline w-full">
+            <a v-if="product" :href="buildWhatsappLink(product, settings.whatsapp_number)" target="_blank" rel="noopener" class="btn-outline w-full">
               Chat via WhatsApp
             </a>
           </div>

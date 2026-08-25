@@ -56,9 +56,13 @@
 </template>
 
 <script setup lang="ts">
-const waLink = `https://wa.me/${WA_ADMIN_NUMBER}?text=${encodeURIComponent(
-  'Halo Admin WOOMAN, saya mau tanya-tanya produk ya!'
-)}`
+const { settings } = useStoreSettings()
+
+// Nomor WA tombol "WhatsApp Admin" sekarang mengikuti Nomor WhatsApp
+// yang dikelola dari admin (Kelola Profile > Kelola Media Sosial)
+const waLink = computed(() =>
+  buildWaLink(settings.value.whatsapp_number, 'Halo Admin WOOMAN, saya mau tanya-tanya produk ya!')
+)
 
 const mobileOpen = ref(false)
 const route = useRoute()

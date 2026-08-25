@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-export type AdminTab = 'dashboard' | 'produk' | 'beranda' | 'toko'
+export type AdminTab = 'dashboard' | 'produk' | 'beranda' | 'profil'
 
 defineProps<{ modelValue: AdminTab }>()
 const emit = defineEmits<{ (e: 'update:modelValue', value: AdminTab): void }>()
@@ -62,7 +62,7 @@ const menu: { key: AdminTab; label: string; icon: string }[] = [
   { key: 'dashboard', label: 'Dashboard', icon: 'chart-bar' },
   { key: 'produk', label: 'Kelola Produk', icon: 'hanger' },
   { key: 'beranda', label: 'Kelola Beranda', icon: 'sparkle' },
-  { key: 'toko', label: 'Kelola Toko', icon: 'settings' }
+  { key: 'profil', label: 'Kelola Profile', icon: 'user' }
 ]
 
 const mobileOpen = ref(false)

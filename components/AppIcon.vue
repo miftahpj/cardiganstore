@@ -108,6 +108,11 @@
       <circle cx="11" cy="11" r="7" />
       <path d="M20 20l-4.3-4.3" />
     </template>
+
+    <template v-else-if="name === 'user'">
+      <circle cx="12" cy="8" r="3.4" />
+      <path d="M4.5 20c1-3.6 4.2-5.6 7.5-5.6s6.5 2 7.5 5.6" />
+    </template>
   </svg>
 </template>
 

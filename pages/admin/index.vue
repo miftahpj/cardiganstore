@@ -247,36 +247,94 @@
         </div>
       </div>
 
-      <!-- Kelola Toko -->
-      <div v-else-if="activeTab === 'toko'">
+      <!-- Kelola Profile -->
+      <div v-else-if="activeTab === 'profil'">
         <div class="mb-6">
-          <h1 class="text-2xl font-bold text-primary-800">Kelola Toko</h1>
-          <p class="mt-1 text-sm text-primary-500">Atur link toko Shopee & TikTok Shop yang tampil di seluruh halaman website.</p>
+          <h1 class="text-2xl font-bold text-primary-800">Kelola Profile</h1>
+          <p class="mt-1 text-sm text-primary-500">Atur link toko & media sosial yang tampil di seluruh halaman website.</p>
         </div>
 
-        <form class="max-w-lg space-y-4 rounded-2xl bg-white p-6 shadow-soft" @submit.prevent="submitStoreSettings">
-          <div>
-            <label class="text-xs font-semibold text-primary-500">Link Toko Shopee</label>
-            <input
-              v-model="storeForm.shopee_url"
-              type="url"
-              placeholder="https://shopee.co.id/nama-toko"
-              class="mt-1 w-full rounded-lg border border-blush px-4 py-2 text-sm focus:border-primary-400 focus:outline-none"
-            />
-          </div>
-          <div>
-            <label class="text-xs font-semibold text-primary-500">Link Toko TikTok Shop</label>
-            <input
-              v-model="storeForm.tiktok_url"
-              type="url"
-              placeholder="https://www.tiktok.com/@nama-toko"
-              class="mt-1 w-full rounded-lg border border-blush px-4 py-2 text-sm focus:border-primary-400 focus:outline-none"
-            />
+        <form class="max-w-lg space-y-8" @submit.prevent="submitStoreSettings">
+          <!-- Kelola Toko -->
+          <div class="space-y-4 rounded-2xl bg-white p-6 shadow-soft">
+            <div>
+              <h2 class="font-semibold text-primary-800">Kelola Toko</h2>
+              <p class="mt-0.5 text-xs text-primary-400">Link ini dipakai di tombol "Beli di Shopee" / "Beli di TikTok Shop" pada produk.</p>
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-primary-500">Link Toko Shopee</label>
+              <input
+                v-model="storeForm.shopee_url"
+                type="url"
+                placeholder="https://shopee.co.id/nama-toko"
+                class="mt-1 w-full rounded-lg border border-blush px-4 py-2 text-sm focus:border-primary-400 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-primary-500">Link Toko TikTok Shop</label>
+              <input
+                v-model="storeForm.tiktok_url"
+                type="url"
+                placeholder="https://www.tiktok.com/@nama-toko"
+                class="mt-1 w-full rounded-lg border border-blush px-4 py-2 text-sm focus:border-primary-400 focus:outline-none"
+              />
+            </div>
           </div>
 
-          <p v-if="storeSaved" class="text-xs font-medium text-green-600">Pengaturan toko tersimpan.</p>
+          <!-- Kelola Media Sosial -->
+          <div class="space-y-4 rounded-2xl bg-white p-6 shadow-soft">
+            <div>
+              <h2 class="font-semibold text-primary-800">Kelola Media Sosial</h2>
+              <p class="mt-0.5 text-xs text-primary-400">
+                Link untuk ikon "Ikuti Kami" di footer. Link Shopee mengikuti Link Toko Shopee di atas.
+              </p>
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-primary-500">Link Instagram</label>
+              <input
+                v-model="storeForm.instagram_url"
+                type="url"
+                placeholder="https://instagram.com/nama-akun"
+                class="mt-1 w-full rounded-lg border border-blush px-4 py-2 text-sm focus:border-primary-400 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-primary-500">Link TikTok</label>
+              <input
+                v-model="storeForm.socmed_tiktok_url"
+                type="url"
+                placeholder="https://www.tiktok.com/@nama-akun"
+                class="mt-1 w-full rounded-lg border border-blush px-4 py-2 text-sm focus:border-primary-400 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-primary-500">Nomor WhatsApp</label>
+              <input
+                v-model="storeForm.whatsapp_number"
+                type="text"
+                placeholder="62812xxxxxxx (pakai kode negara, tanpa +)"
+                class="mt-1 w-full rounded-lg border border-blush px-4 py-2 text-sm focus:border-primary-400 focus:outline-none"
+              />
+              <p class="mt-1 text-[11px] text-primary-400">
+                Dipakai untuk semua tombol "Chat/WhatsApp Admin" di seluruh halaman (header, footer, produk).
+              </p>
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-primary-500">Link Saluran WhatsApp (Channel)</label>
+              <input
+                v-model="storeForm.whatsapp_channel_url"
+                type="url"
+                placeholder="https://whatsapp.com/channel/xxxxxxxxxxxx"
+                class="mt-1 w-full rounded-lg border border-blush px-4 py-2 text-sm focus:border-primary-400 focus:outline-none"
+              />
+              <p class="mt-1 text-[11px] text-primary-400">
+                Dipakai untuk tombol "Gabung Saluran WhatsApp" di footer.
+              </p>
+            </div>
+          </div>
 
-          <div class="flex justify-end pt-2">
+          <div class="flex items-center justify-end gap-3">
+            <p v-if="storeSaved" class="text-xs font-medium text-green-600">Pengaturan tersimpan.</p>
             <button type="submit" class="btn-primary !px-5 !py-2 text-xs" :disabled="savingStore">
               {{ savingStore ? 'Menyimpan...' : 'Simpan Pengaturan' }}
             </button>
@@ -644,8 +702,15 @@ async function confirmDelete(product: Product) {
   }
 }
 
-// Kelola Toko
-const storeForm = reactive({ shopee_url: '', tiktok_url: '' })
+// Kelola Profile: Kelola Toko + Kelola Media Sosial
+const storeForm = reactive({
+  shopee_url: '',
+  tiktok_url: '',
+  instagram_url: '',
+  whatsapp_number: '',
+  socmed_tiktok_url: '',
+  whatsapp_channel_url: ''
+})
 const savingStore = ref(false)
 const storeSaved = ref(false)
 
@@ -654,6 +719,10 @@ watch(
   (val) => {
     storeForm.shopee_url = val.shopee_url
     storeForm.tiktok_url = val.tiktok_url
+    storeForm.instagram_url = val.instagram_url
+    storeForm.whatsapp_number = val.whatsapp_number
+    storeForm.socmed_tiktok_url = val.socmed_tiktok_url
+    storeForm.whatsapp_channel_url = val.whatsapp_channel_url
   },
   { immediate: true }
 )
@@ -662,7 +731,14 @@ async function submitStoreSettings() {
   savingStore.value = true
   storeSaved.value = false
   try {
-    await updateSettings({ shopee_url: storeForm.shopee_url, tiktok_url: storeForm.tiktok_url })
+    await updateSettings({
+      shopee_url: storeForm.shopee_url,
+      tiktok_url: storeForm.tiktok_url,
+      instagram_url: storeForm.instagram_url,
+      whatsapp_number: storeForm.whatsapp_number,
+      socmed_tiktok_url: storeForm.socmed_tiktok_url,
+      whatsapp_channel_url: storeForm.whatsapp_channel_url
+    })
     storeSaved.value = true
   } catch (e: any) {
     alert(e?.data?.statusMessage || 'Gagal menyimpan pengaturan toko.')

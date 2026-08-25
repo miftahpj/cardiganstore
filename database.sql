@@ -25,6 +25,35 @@ CREATE INDEX IF NOT EXISTS idx_products_is_active ON products (is_active);
 CREATE INDEX IF NOT EXISTS idx_products_is_featured ON products (is_featured);
 
 -- =========================================================
+-- Foto produk disimpan langsung di database (bukan URL eksternal lagi)
+-- image_url tetap dipakai sebagai src <img>, tapi isinya jadi link ke
+-- endpoint /api/products/:id/image yang membaca bytea di bawah ini
+-- =========================================================
+
+ALTER TABLE products ADD COLUMN IF NOT EXISTS image_data BYTEA;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS image_mime VARCHAR(100);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW();
+
+-- =========================================================
+-- Kategori produk (dikelola langsung dari halaman admin)
+-- Produk memilih salah satu kategori, mis. "Cardigan"
+-- =========================================================
+
+CREATE TABLE IF NOT EXISTS categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE products ADD COLUMN IF NOT EXISTS category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL;
+
+CREATE INDEX IF NOT EXISTS idx_products_category_id ON products (category_id);
+
+INSERT INTO categories (name)
+VALUES ('Cardigan')
+ON CONFLICT (name) DO NOTHING;
+
+-- =========================================================
 -- Pengaturan toko (link Shopee & TikTok Shop, dikelola dari admin)
 -- Tabel ini hanya berisi 1 baris (id = 1)
 -- =========================================================
@@ -41,11 +70,43 @@ VALUES (1, 'https://shopee.co.id/wooman.id', 'https://www.tiktok.com/@woomanbykh
 ON CONFLICT (id) DO NOTHING;
 
 -- =========================================================
+-- Kelola Media Sosial (bagian "Ikuti Kami" di footer)
+-- Instagram, TikTok (profil), dan WhatsApp punya link sendiri-sendiri
+-- dan dikelola terpisah dari link Shopee/TikTok Shop di atas.
+-- Shopee TIDAK punya kolom baru karena tetap memakai shopee_url yang sama.
+-- =========================================================
+
+ALTER TABLE store_settings ADD COLUMN IF NOT EXISTS instagram_url TEXT NOT NULL DEFAULT '';
+ALTER TABLE store_settings ADD COLUMN IF NOT EXISTS whatsapp_number TEXT NOT NULL DEFAULT '';
+ALTER TABLE store_settings ADD COLUMN IF NOT EXISTS socmed_tiktok_url TEXT NOT NULL DEFAULT '';
+
+UPDATE store_settings
+SET
+  instagram_url = COALESCE(NULLIF(instagram_url, ''), 'https://instagram.com/wooman.officialstore'),
+  whatsapp_number = COALESCE(NULLIF(whatsapp_number, ''), '6285759169693'),
+  socmed_tiktok_url = COALESCE(NULLIF(socmed_tiktok_url, ''), 'https://www.tiktok.com/@woomanbykhania')
+WHERE id = 1;
+
+-- =========================================================
+-- Kelola Saluran WhatsApp (tombol "Gabung Saluran WhatsApp" di footer)
+-- Nomor WA admin (whatsapp_number di atas) dan link Saluran/Channel WA
+-- sekarang dipisah jadi 2 pengaturan sendiri-sendiri.
+-- =========================================================
+
+ALTER TABLE store_settings ADD COLUMN IF NOT EXISTS whatsapp_channel_url TEXT NOT NULL DEFAULT '';
+
+UPDATE store_settings
+SET whatsapp_channel_url = COALESCE(NULLIF(whatsapp_channel_url, ''), 'https://whatsapp.com/channel/0029VbD8BtB9WtC9NF56161p')
+WHERE id = 1;
+
+-- =========================================================
 -- Dummy / mockup data (hanya terisi kalau tabel products masih kosong)
 -- =========================================================
 
-INSERT INTO products (name, description, image_url, price, code, is_active, is_featured, shopee_url, tiktok_url)
-SELECT * FROM (VALUES
+INSERT INTO products (name, description, image_url, price, code, is_active, is_featured, category_id, shopee_url, tiktok_url)
+SELECT s.name, s.description, s.image_url, s.price, s.code, s.is_active, s.is_featured,
+       (SELECT id FROM categories WHERE name = 'Cardigan'), s.shopee_url, s.tiktok_url
+FROM (VALUES
 (
   'Cardigan Knit Blossom',
   'Cardigan rajut lembut dengan potongan oversized, cocok dipadukan dengan inner apapun. Bahan adem, tidak gerah, dan nyaman dipakai seharian.',

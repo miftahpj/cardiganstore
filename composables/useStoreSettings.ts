@@ -1,12 +1,20 @@
 export interface StoreSettings {
   shopee_url: string
   tiktok_url: string
+  instagram_url: string
+  whatsapp_number: string
+  socmed_tiktok_url: string
+  whatsapp_channel_url: string
 }
 
 export function useStoreSettings() {
   const settings = useState<StoreSettings>('store-settings', () => ({
     shopee_url: SHOPEE_STORE_URL,
-    tiktok_url: TIKTOK_STORE_URL
+    tiktok_url: TIKTOK_STORE_URL,
+    instagram_url: INSTAGRAM_URL,
+    whatsapp_number: WA_ADMIN_NUMBER,
+    socmed_tiktok_url: TIKTOK_STORE_URL,
+    whatsapp_channel_url: WA_CHANNEL_URL
   }))
   const loading = useState<boolean>('store-settings-loading', () => false)
   const error = useState<string | null>('store-settings-error', () => null)
@@ -20,7 +28,11 @@ export function useStoreSettings() {
       const data = await $fetch<StoreSettings>('/api/settings')
       settings.value = {
         shopee_url: data.shopee_url || SHOPEE_STORE_URL,
-        tiktok_url: data.tiktok_url || TIKTOK_STORE_URL
+        tiktok_url: data.tiktok_url || TIKTOK_STORE_URL,
+        instagram_url: data.instagram_url || INSTAGRAM_URL,
+        whatsapp_number: data.whatsapp_number || WA_ADMIN_NUMBER,
+        socmed_tiktok_url: data.socmed_tiktok_url || TIKTOK_STORE_URL,
+        whatsapp_channel_url: data.whatsapp_channel_url || WA_CHANNEL_URL
       }
       loaded.value = true
     } catch (err: any) {

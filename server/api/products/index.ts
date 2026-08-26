@@ -56,6 +56,8 @@ export default defineEventHandler(async (event) => {
 
   // POST /api/products -> create new product (multipart/form-data, field "image" = file foto)
   if (method === 'POST') {
+    requireAdminAuth(event)
+
     const { fields, file } = await parseProductBody(event)
     const name = fields.name?.trim()
     const price = fields.price !== undefined ? Number(fields.price) : undefined

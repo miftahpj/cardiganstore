@@ -446,7 +446,7 @@ import type { Product } from '~/composables/useProducts'
 import type { Category } from '~/composables/useCategories'
 import type { AdminTab } from '~/components/AdminSidebar.vue'
 
-definePageMeta({ layout: 'default' })
+definePageMeta({ layout: 'default', middleware: 'admin' })
 
 const { products, loading, error, fetchProducts, createProduct, updateProduct, deleteProduct, toggleActive, toggleFeatured } =
   useAdminProducts()

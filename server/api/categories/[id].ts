@@ -9,6 +9,8 @@ export default defineEventHandler(async (event) => {
 
   // DELETE /api/categories/:id -> hapus kategori (produk terkait otomatis jadi "tanpa kategori")
   if (method === 'DELETE') {
+    requireAdminAuth(event)
+
     const { rows } = await pool.query('DELETE FROM categories WHERE id = $1 RETURNING id', [id])
     if (rows.length === 0) {
       throw createError({ statusCode: 404, statusMessage: 'Kategori tidak ditemukan.' })

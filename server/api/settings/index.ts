@@ -22,6 +22,8 @@ export default defineEventHandler(async (event) => {
 
   // PUT /api/settings -> update link toko (Shopee & TikTok Shop) & media sosial (Instagram, TikTok, WhatsApp, Saluran WhatsApp)
   if (method === 'PUT') {
+    requireAdminAuth(event)
+
     const body = await readBody(event)
     const { shopee_url, tiktok_url, instagram_url, whatsapp_number, socmed_tiktok_url, whatsapp_channel_url } = body
 

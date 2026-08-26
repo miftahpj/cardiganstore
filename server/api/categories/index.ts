@@ -10,6 +10,8 @@ export default defineEventHandler(async (event) => {
 
   // POST /api/categories -> tambah kategori baru
   if (method === 'POST') {
+    requireAdminAuth(event)
+
     const body = await readBody(event)
     const name = typeof body?.name === 'string' ? body.name.trim() : ''
 

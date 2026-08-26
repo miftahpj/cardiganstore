@@ -39,6 +39,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     databaseUrl: process.env.DATABASE_URL,
+    adminUsername: process.env.ADMIN_USERNAME || 'Wooman.id',
+    adminPassword: process.env.ADMIN_PASSWORD || 'Wooman2025',
+    adminSessionSecret: process.env.ADMIN_SESSION_SECRET || 'wooman-khania-ganti-secret-ini-di-env',
     public: {}
   }
 })

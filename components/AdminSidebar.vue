@@ -49,6 +49,14 @@
     >
       <AppIcon name="arrow-left" class="h-4 w-4" /> Kembali ke Website
     </NuxtLink>
+
+    <button
+      type="button"
+      class="mt-2 flex items-center gap-3 rounded-xl border border-white/10 px-4 py-3 text-left text-sm font-medium text-primary-200 transition hover:bg-white/5"
+      @click="handleLogout"
+    >
+      <AppIcon name="x" class="h-4 w-4" /> Logout
+    </button>
   </aside>
 </template>
 
@@ -70,5 +78,10 @@ const mobileOpen = ref(false)
 function select(tab: AdminTab) {
   emit('update:modelValue', tab)
   mobileOpen.value = false
+}
+
+async function handleLogout() {
+  await $fetch('/api/auth/logout', { method: 'POST' })
+  await navigateTo('/admin/login')
 }
 </script>

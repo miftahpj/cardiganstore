@@ -20,6 +20,8 @@ export default defineEventHandler(async (event) => {
   // PUT /api/products/:id -> update product
   // Terima multipart/form-data (field "image" opsional -> ganti foto) ATAU JSON biasa (update parsial, tanpa foto)
   if (method === 'PUT') {
+    requireAdminAuth(event)
+
     const { fields, file } = await parseProductBody(event)
 
     const is_active = fields.is_active === undefined ? true : fields.is_active === 'true'
@@ -79,6 +81,8 @@ export default defineEventHandler(async (event) => {
 
   // DELETE /api/products/:id -> remove product
   if (method === 'DELETE') {
+    requireAdminAuth(event)
+
     const { rows } = await pool.query('DELETE FROM products WHERE id = $1 RETURNING id', [id])
     if (rows.length === 0) {
       throw createError({ statusCode: 404, statusMessage: 'Produk tidak ditemukan.' })

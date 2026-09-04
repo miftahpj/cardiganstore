@@ -15,28 +15,6 @@
         class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         loading="lazy"
       />
-      <div class="absolute right-3 top-3 flex flex-col gap-2">
-        <a
-          :href="product.shopee_url || settings.shopee_url"
-          target="_blank"
-          rel="noopener"
-          title="Beli di Shopee"
-          class="flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-soft transition hover:scale-110"
-          @click.stop
-        >
-          <BrandMark brand="shopee" class="h-5 w-5" />
-        </a>
-        <a
-          :href="product.tiktok_url || settings.tiktok_url"
-          target="_blank"
-          rel="noopener"
-          title="Lihat di TikTok Shop"
-          class="flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-soft transition hover:scale-110"
-          @click.stop
-        >
-          <BrandMark brand="tiktok" class="h-5 w-5" />
-        </a>
-      </div>
     </div>
 
     <!-- Judul, harga & deskripsi: kontras & ukuran diperbesar biar gampang dibaca -->

@@ -29,29 +29,8 @@
           <p class="mt-4 text-2xl font-bold text-primary-600">{{ formatRupiah(product?.price || 0) }}</p>
           <p class="mt-6 leading-relaxed text-primary-600">{{ product?.description }}</p>
 
-          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a
-              v-if="product"
-              :href="product.shopee_url || settings.shopee_url"
-              target="_blank"
-              rel="noopener"
-              class="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-orange-500 px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-orange-600"
-            >
-              <BrandMark brand="shopee" class="h-5 w-5" /> Beli di Shopee
-            </a>
-            <a
-              v-if="product"
-              :href="product.tiktok_url || settings.tiktok_url"
-              target="_blank"
-              rel="noopener"
-              class="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary-900 px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-primary-800"
-            >
-              <BrandMark brand="tiktok" class="h-5 w-5" /> Beli di TikTok Shop
-            </a>
-          </div>
-
-          <div class="mt-3">
-            <a v-if="product" :href="buildWhatsappLink(product, settings.whatsapp_number)" target="_blank" rel="noopener" class="btn-outline w-full">
+          <div class="mt-8">
+            <a v-if="product" :href="buildWhatsappLink(product, settings.whatsapp_number)" target="_blank" rel="noopener" class="btn-primary w-full">
               Chat via WhatsApp
             </a>
           </div>

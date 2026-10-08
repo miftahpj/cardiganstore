@@ -113,6 +113,21 @@
       <circle cx="12" cy="8" r="3.4" />
       <path d="M4.5 20c1-3.6 4.2-5.6 7.5-5.6s6.5 2 7.5 5.6" />
     </template>
+
+    <template v-else-if="name === 'cart'">
+      <circle cx="9.5" cy="20" r="1.4" fill="currentColor" stroke="none" />
+      <circle cx="17.5" cy="20" r="1.4" fill="currentColor" stroke="none" />
+      <path d="M3 4h2.2l2.1 11.1a2 2 0 0 0 2 1.6h8a2 2 0 0 0 2-1.6L21 8H6.2" />
+    </template>
+
+    <template v-else-if="name === 'plus'">
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </template>
+
+    <template v-else-if="name === 'minus'">
+      <path d="M5 12h14" />
+    </template>
   </svg>
 </template>
 

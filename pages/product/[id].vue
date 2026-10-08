@@ -29,8 +29,41 @@
           <p class="mt-4 text-2xl font-bold text-primary-600">{{ formatRupiah(product?.price || 0) }}</p>
           <p class="mt-6 leading-relaxed text-primary-600">{{ product?.description }}</p>
 
-          <div class="mt-8">
-            <a v-if="product" :href="buildWhatsappLink(product, settings.whatsapp_number)" target="_blank" rel="noopener" class="btn-primary w-full">
+          <div v-if="product" class="mt-8 flex flex-col gap-3">
+            <!-- Pilih jumlah -->
+            <div class="flex items-center gap-3">
+              <span class="text-sm font-semibold text-primary-800">Jumlah</span>
+              <div class="flex items-center gap-3 rounded-xl bg-blush px-2 py-1.5">
+                <button
+                  type="button"
+                  aria-label="Kurangi jumlah"
+                  class="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-primary-600 shadow-soft transition active:scale-90"
+                  @click="qty = Math.max(1, qty - 1)"
+                >
+                  <AppIcon name="minus" class="h-3.5 w-3.5" />
+                </button>
+                <span class="w-5 text-center text-sm font-bold text-primary-800">{{ qty }}</span>
+                <button
+                  type="button"
+                  aria-label="Tambah jumlah"
+                  class="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-primary-600 shadow-soft transition active:scale-90"
+                  @click="qty++"
+                >
+                  <AppIcon name="plus" class="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-primary-500 py-3 text-sm font-semibold text-primary-600 transition hover:bg-primary-500 hover:text-white active:scale-95"
+              @click="handleAddToCart"
+            >
+              <AppIcon :name="added ? 'check-circle' : 'cart'" class="h-5 w-5" />
+              {{ added ? 'Ditambahkan ke Keranjang' : 'Tambah ke Keranjang' }}
+            </button>
+
+            <a :href="buildWhatsappLink(product, settings.whatsapp_number)" target="_blank" rel="noopener" class="btn-primary w-full">
               Chat via WhatsApp
             </a>
           </div>
@@ -54,12 +87,28 @@
 const route = useRoute()
 const { fetchProduct } = useProducts()
 const { settings } = useStoreSettings()
+const { addToCart } = useCart()
 
 const {
   data: product,
   pending,
   error
 } = await useAsyncData(`product-${route.params.id}`, () => fetchProduct(route.params.id as string))
+
+const qty = ref(1)
+const added = ref(false)
+let resetTimer: ReturnType<typeof setTimeout> | null = null
+
+function handleAddToCart() {
+  if (!product.value) return
+  addToCart(product.value, qty.value)
+  added.value = true
+  qty.value = 1
+  if (resetTimer) clearTimeout(resetTimer)
+  resetTimer = setTimeout(() => {
+    added.value = false
+  }, 1500)
+}
 
 useHead(() => ({
   title: product.value ? `${product.value.name} | WOOMAN by Khania` : 'WOOMAN by Khania',

@@ -15,6 +15,21 @@
       </nav>
 
       <div class="flex items-center gap-2">
+        <NuxtLink
+          to="/keranjang"
+          aria-label="Keranjang"
+          class="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-primary-700 transition hover:bg-white/60"
+          @click="mobileOpen = false"
+        >
+          <AppIcon name="cart" class="h-5 w-5" />
+          <span
+            v-if="totalItems > 0"
+            class="absolute -right-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-primary-600 px-1 text-[10px] font-bold leading-none text-white"
+          >
+            {{ totalItems }}
+          </span>
+        </NuxtLink>
+
         <a
           :href="waLink"
           target="_blank"
@@ -49,6 +64,10 @@
       >
         <NuxtLink to="/" class="rounded-xl px-4 py-2.5 transition hover:bg-primary-100" @click="mobileOpen = false">Beranda</NuxtLink>
         <NuxtLink to="/katalog" class="rounded-xl px-4 py-2.5 transition hover:bg-primary-100" @click="mobileOpen = false">Katalog</NuxtLink>
+        <NuxtLink to="/keranjang" class="flex items-center justify-between rounded-xl px-4 py-2.5 transition hover:bg-primary-100" @click="mobileOpen = false">
+          <span>Keranjang</span>
+          <span v-if="totalItems > 0" class="rounded-full bg-primary-600 px-2 py-0.5 text-[11px] font-bold text-white">{{ totalItems }}</span>
+        </NuxtLink>
         <a href="#kontak" class="rounded-xl px-4 py-2.5 transition hover:bg-primary-100" @click="mobileOpen = false">Kontak</a>
       </div>
     </transition>
@@ -57,6 +76,7 @@
 
 <script setup lang="ts">
 const { settings } = useStoreSettings()
+const { totalItems } = useCart()
 
 // Nomor WA tombol "WhatsApp Admin" sekarang mengikuti Nomor WhatsApp
 // yang dikelola dari admin (Kelola Profile > Kelola Media Sosial)

@@ -36,15 +36,14 @@
       >
         Cek Detail
       </NuxtLink>
-      <a
-        :href="buildWhatsappLink(product, settings.whatsapp_number)"
-        target="_blank"
-        rel="noopener"
-        class="w-full rounded-xl border-2 border-primary-500 py-2.5 text-center text-xs font-semibold text-primary-600 transition hover:bg-primary-500 hover:text-white active:scale-95"
-        @click.stop
+      <button
+        type="button"
+        class="flex w-full items-center justify-center gap-1.5 rounded-xl border-2 border-primary-500 py-2.5 text-xs font-semibold text-primary-600 transition hover:bg-primary-500 hover:text-white active:scale-95"
+        @click.stop="handleAddToCart"
       >
-        Chat via WhatsApp
-      </a>
+        <AppIcon :name="added ? 'check-circle' : 'cart'" class="h-4 w-4" />
+        {{ added ? 'Ditambahkan' : 'Tambah Keranjang' }}
+      </button>
     </div>
   </div>
 </template>
@@ -54,7 +53,19 @@ import type { Product } from '~/composables/useProducts'
 
 const props = defineProps<{ product: Product }>()
 
-const { settings } = useStoreSettings()
+const { addToCart } = useCart()
+
+const added = ref(false)
+let resetTimer: ReturnType<typeof setTimeout> | null = null
+
+function handleAddToCart() {
+  addToCart(props.product, 1)
+  added.value = true
+  if (resetTimer) clearTimeout(resetTimer)
+  resetTimer = setTimeout(() => {
+    added.value = false
+  }, 1500)
+}
 
 function goToDetail() {
   navigateTo(`/product/${props.product.id}`)
